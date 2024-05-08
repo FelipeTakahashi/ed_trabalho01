@@ -2,7 +2,7 @@
 
 /*
    Modelo para busca na hash
-   -Exemplo mostrando como o caso de cidades com mesmo nome é tratado.
+   -Este exemplo mostra como o caso de cidades com mesmo nome é tratado.
    -A busca por código funciona de maneira similar. Por ter chave única, retorna o bucket em sí.
 */
 
