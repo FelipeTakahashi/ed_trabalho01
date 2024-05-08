@@ -39,7 +39,7 @@ void knn(typeNode* node, typeCity* city, maxHeap* heap, int k, int dimension) {
         if(heap->size < k || planeDistance <= sqrt(currentMax)) {
             /*
             Quando a heap não estiver cheia ou se o plano a ser dividido (subárvore oposta) pode possuir um
-            candidato melhor, indica que compensa
+            candidato melhor, indica que compensa realizar a busca no eixo que está sendo dividido.
             */
             knn(node->right, city, heap, k, (dimension+1) % N_DIM);
         }
