@@ -5,6 +5,5 @@ garantir menos colisões durante a inserção. No mesmo contexto da hash, é pos
 genéricas para reduzir a quantidade de funções necessárias para o funcionamento da hash. Entretanto, a implementa-
 ção de funções genéricas não necessariamente melhora a execução código em sí.
     Em segunda análise, a mudança mais impactante na complexidade seria o balanceamento da KD Tree. O balanceamento
-da estrutura garante um limite superior O(logn) para uma função que busca APENAS um vizinho mais proximo na árvore,
-para a busca de múltiplos vizinhos, o limite superior ainda é limitado em O(k * logn). Enquanto, a construção, com
-um algoritmo de ordenação bom o suficiente, seria O(nlogn) para caso caso médio.
+da estrutura reduziria o custo computacional das funções da árvore. Nesse mesmo âmbito, o balanceamento da estrutu-
+ra, em uma implementação pouco mais complexa, constrói a árvore em O(nlogn).
