@@ -1,0 +1,10 @@
+Após a breve explicação sobre as estruturas e algortimos implementados, pode-se concluir que existem possíveis
+melhorias na lógica de algumas propriedades das estruturas para reduzir a complexidade de tempo durante a execução.
+    Sob tal viés, é possivel alterar a estruturação da hash para uma mais complexa, i.e, funções hash capazes de
+garantir menos colisões durante a inserção. No mesmo contexto da hash, é possível implementar funções mais
+genéricas para reduzir a quantidade de funções necessárias para o funcionamento da hash. Entretanto, a implementa-
+ção de funções genéricas não necessariamente melhora a execução código em sí.
+    Em segunda análise, a mudança mais impactante na complexidade seria o balanceamento da KD Tree. O balanceamento
+da estrutura garante um limite superior O(logn) para uma função que busca APENAS um vizinho mais proximo na árvore,
+para a busca de múltiplos vizinhos, o limite superior ainda é limitado em O(k * logn). Enquanto, a construção, com
+um algoritmo de ordenação bom o suficiente, seria O(nlogn) para caso caso médio.
