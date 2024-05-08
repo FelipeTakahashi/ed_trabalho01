@@ -14,7 +14,7 @@ ou
 ## Navegação
 
 <blockquote> Link para o vídeo no youtube </blockquote>
-<p><a>
+<p><a
 href="https://youtu.be/gJ4GBVhoqpU">Vídeo</a></p>
 
 <details>
