@@ -5,11 +5,11 @@
 
 ## Compilar
 
-> > gcc -o exec cidade.c hash.c heap.c kdtree.c main.c <br>
+> gcc -o exec cidade.c hash.c heap.c kdtree.c main.c <br>
 
 ou
 
-> > gcc -o exec conveniente.c
+> gcc -o exec conveniente.c
 
 ## Navegação
 
