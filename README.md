@@ -13,6 +13,10 @@ ou
 
 ## Navegação
 
+<blockquote> Link para o vídeo no youtube </blockquote>
+<p><a>
+href="https://youtu.be/gJ4GBVhoqpU">Vídeo</a></p>
+
 <details>
     <summary> <h3> Arquivos - Auxiliares </h3> </summary>
     <blockquote>Links para arquivos auxiliares</blockquote>
