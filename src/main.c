@@ -20,17 +20,22 @@ void removeQuotation(char* value) {
 }
 
 void parse(typeHash* hashC, typeNode** tree, typeHash* hashN) {
-    FILE *readJSON;
-    readJSON = fopen("../municipios.json", "r");
+    FILE *readJSON = fopen("../municipios.json", "r");
+    if (!readJSON) {
+        return;
+    }
 
     char line[100];
     int dataCounter = 0;
-    int inserted = 0;
 
     typeCity* city = malloc(sizeof(typeCity));
+    if (!city) {
+        fclose(readJSON);
+        return;
+    }
+
     while (fgets(line, sizeof(line), readJSON)) {
         char *token = strtok(line, ":\t\n\r");
-
         while (token != NULL) {
             token = strtok(NULL, ":\t\n,{}]");
 
@@ -39,14 +44,6 @@ void parse(typeHash* hashC, typeNode** tree, typeHash* hashN) {
             }
 
             char* blankspacePointer = strchr(token, ' ');
-
-            /*
-            Para simplificar o processo e o código do parser,
-            blankspacePointer existe pra localizar o primeiro espaço do valor
-            "codigo_ibge": valor
-            o blankspacePointer existe para localizar o primeiro ' ' após ':' e alterar
-            o ponteiro para ignorar o ' ' durante o processo de inserção.
-            */
 
             if (blankspacePointer != NULL) {
                 dataCounter++;
@@ -86,12 +83,13 @@ void parse(typeHash* hashC, typeNode** tree, typeHash* hashN) {
                     hashInsertByCode(hashC, copyCity(city));
                     hashInsertByName(hashN, copyCity(city));
                     kdInsert(tree, copyCity(city), 0);
-
                     break;
                 }
             }
         }
     }
+    free(city);
+
     fclose(readJSON);
 }
 
