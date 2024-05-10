@@ -83,6 +83,14 @@ int checkInHeap(typeCity* city, maxHeap* heap) {
 }
 
 void freeHeap(maxHeap* heap){
-    free(heap->heap);
+    if (heap == NULL) {
+        return;
+    }
+
+    if(heap->heap != NULL) {
+        free(heap->heap);
+        heap->heap = NULL;
+    }
+
     free(heap);
 }

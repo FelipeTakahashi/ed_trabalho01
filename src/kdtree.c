@@ -96,9 +96,19 @@ void preorder(typeNode* tree) {
 }
 
 void kdDestroy(typeNode* tree) {
-    if(tree != NULL) {
+    if(tree == NULL) return;
+    if(tree->left != NULL) {
         kdDestroy(tree->left);
-        kdDestroy(tree->right);
-        free(tree);
+        tree->left = NULL;
     }
+    if(tree->right != NULL) {
+        kdDestroy(tree->right);
+        tree->right = NULL;
+    }
+    if(tree->city != NULL) {
+        free(tree->city);
+        tree->city = NULL;
+    }
+
+    free(tree);
 }

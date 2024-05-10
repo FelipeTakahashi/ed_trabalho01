@@ -102,7 +102,7 @@ int hashFunction2(char *key) {
 int hashInit(typeHash* hash, int buckets) {
     int limit = buckets+1;
 
-    hash->table = calloc(sizeof(typeCity), limit);
+    hash->table = calloc(sizeof(typeCity*), limit);
 
     if(hash->table == NULL) {
         printf("Não foi possível alocar a Hash.\n");
@@ -224,12 +224,15 @@ char* hashSearchByName(typeHash* hash, char* key) {
 
 void hashDestroy(typeHash* hash) {
     for(int i = 0; i < hash->maxSize; i++) {
-        if(hash->table[i] != 0) {
+        if(hash->table[i] != NULL) {
             free(hash->table[i]);
+            hash->table[i] = NULL;
         }
     }
 
     free(hash->table);
+    free(hash);
+
     return;
 }
 
@@ -313,7 +316,15 @@ void heapSort(maxHeap* heap){
 }
 
 void freeHeap(maxHeap* heap){
-    free(heap->heap);
+    if (heap == NULL) {
+        return;
+    }
+
+    if(heap->heap != NULL) {
+        free(heap->heap);
+        heap->heap = NULL;
+    }
+
     free(heap);
 }
 
@@ -408,11 +419,21 @@ void preorder(typeNode* tree) {
 }
 
 void kdDestroy(typeNode* tree) {
-    if(tree != NULL) {
+    if(tree == NULL) return;
+    if(tree->left != NULL) {
         kdDestroy(tree->left);
-        kdDestroy(tree->right);
-        free(tree);
+        tree->left = NULL;
     }
+    if(tree->right != NULL) {
+        kdDestroy(tree->right);
+        tree->right = NULL;
+    }
+    if(tree->city != NULL) {
+        free(tree->city);
+        tree->city = NULL;
+    }
+
+    free(tree);
 }
 
 // --- PARSER FUNCTIONS --- //
@@ -446,22 +467,17 @@ typeCity* copyCity(typeCity* city) {
 }
 
 void parse(typeHash* hashC, typeNode** tree, typeHash* hashN) {
-    FILE *readJSON = fopen("../municipios.json", "r");
-    if (!readJSON) {
-        return;
-    }
+    FILE *readJSON;
+    readJSON = fopen("municipios.json", "r");
 
     char line[100];
     int dataCounter = 0;
+    int inserted = 0;
 
     typeCity* city = malloc(sizeof(typeCity));
-    if (!city) {
-        fclose(readJSON);
-        return;
-    }
-
     while (fgets(line, sizeof(line), readJSON)) {
         char *token = strtok(line, ":\t\n\r");
+
         while (token != NULL) {
             token = strtok(NULL, ":\t\n,{}]");
 
@@ -470,6 +486,14 @@ void parse(typeHash* hashC, typeNode** tree, typeHash* hashN) {
             }
 
             char* blankspacePointer = strchr(token, ' ');
+
+            /*
+            Para simplificar o processo e o código do parser,
+            blankspacePointer existe pra localizar o primeiro espaço do valor
+            "codigo_ibge": valor
+            o blankspacePointer existe para localizar o primeiro ' ' após ':' e alterar
+            o ponteiro para ignorar o ' ' durante o processo de inserção.
+            */
 
             if (blankspacePointer != NULL) {
                 dataCounter++;
@@ -506,16 +530,15 @@ void parse(typeHash* hashC, typeNode** tree, typeHash* hashN) {
                     strcpy(city->fuso_horario, value);
                     dataCounter = 0;
 
-                    hashInsertByCode(hashC, copyCity(city));
-                    hashInsertByName(hashN, copyCity(city));
-                    kdInsert(tree, copyCity(city), 0);
+                        hashInsertByCode(hashC, copyCity(city));
+                        hashInsertByName(hashN, copyCity(city));
+                        kdInsert(tree, copyCity(city), 0);
+
                     break;
                 }
             }
         }
     }
-    free(city);
-
     fclose(readJSON);
 }
 
@@ -685,6 +708,10 @@ int main() {
     hashDestroy(hashCode);
     hashDestroy(hashName);
     kdDestroy(kdtree);
+
+    hashCode = NULL;
+    hashName = NULL;
+    kdtree = NULL;
 
     return EXIT_SUCCESS;
 }

@@ -83,16 +83,15 @@ void parse(typeHash* hashC, typeNode** tree, typeHash* hashN) {
                     strcpy(city->fuso_horario, value);
                     dataCounter = 0;
 
-                    hashInsertByCode(hashC, copyCity(city));
-                    hashInsertByName(hashN, copyCity(city));
-                    kdInsert(tree, copyCity(city), 0);
+                        hashInsertByCode(hashC, copyCity(city));
+                        hashInsertByName(hashN, copyCity(city));
+                        kdInsert(tree, copyCity(city), 0);
 
                     break;
                 }
             }
         }
     }
-    free(city);
     fclose(readJSON);
 }
 
@@ -190,7 +189,7 @@ void taskThree(typeHash* hashC, typeHash* hashN, typeNode* kdtree) {
     printf("Digite quantos vizinhos procurar: \n");
     scanf("%d", &k);
 
-    if(k <= 0 || k > 5569) {
+    if(k > 5569 || k < 1) {
         printf("Valor inválido.\n");
         return;
     }
@@ -207,6 +206,7 @@ void taskThree(typeHash* hashC, typeHash* hashN, typeNode* kdtree) {
         }
         printf("%d. ", i+1);
         printRowWithDistance(heap->heap[i].city, heap->heap[i].distance);
+        //printf("%d. %s : %s\n", i+1, heap->heap[i].city->nome, heap->heap[i].city->codigo_ibge);
     }
     freeHeap(heap);
 }
@@ -261,6 +261,10 @@ int main() {
     hashDestroy(hashCode);
     hashDestroy(hashName);
     kdDestroy(kdtree);
+
+    hashCode = NULL;
+    hashName = NULL;
+    kdtree = NULL;
 
     return EXIT_SUCCESS;
 }

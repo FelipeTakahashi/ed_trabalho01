@@ -30,7 +30,7 @@ int hashFunction2(char *key) {
 int hashInit(typeHash* hash, int buckets) {
     int limit = buckets+1;
 
-    hash->table = calloc(sizeof(typeCity), limit);
+    hash->table = calloc(sizeof(typeCity*), limit);
 
     if(hash->table == NULL) {
         printf("Não foi possível alocar a Hash.\n");
@@ -142,7 +142,7 @@ char* hashSearchByName(typeHash* hash, char* key) {
         int option;
         scanf("%d", &option);
 
-        if (option > candidatesSize || option < 0) return NULL;
+        if(option > candidatesSize || option < 0) return NULL;
 
         return candidates[option-1]->codigo_ibge;
     }
@@ -152,11 +152,14 @@ char* hashSearchByName(typeHash* hash, char* key) {
 
 void hashDestroy(typeHash* hash) {
     for(int i = 0; i < hash->maxSize; i++) {
-        if(hash->table[i] != 0) {
+        if(hash->table[i] != NULL) {
             free(hash->table[i]);
+            hash->table[i] = NULL;
         }
     }
 
     free(hash->table);
+    free(hash);
+
     return;
 }
